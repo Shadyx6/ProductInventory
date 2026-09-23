@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, ArrowDownLeft, ArrowUpRight } from 'lucide-react';
+import { X, Plus, Minus } from 'lucide-react';
 
 const StockModal = ({ isOpen, onClose, onSubmit, product, mode = 'IN' }) => {
   const [quantity, setQuantity] = useState('1');
@@ -32,19 +32,26 @@ const StockModal = ({ isOpen, onClose, onSubmit, product, mode = 'IN' }) => {
     onSubmit({ quantity: parsedQty, note: note.trim() });
   };
 
+  const parsedInput = parseInt(quantity, 10);
+  const validQty = !isNaN(parsedInput) && parsedInput > 0 ? parsedInput : 0;
+  const projectedStock = mode === 'IN' 
+    ? Number(product.quantity) + validQty
+    : Number(product.quantity) - validQty;
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {mode === 'IN' ? (
-              <ArrowDownLeft size={20} style={{ color: 'var(--status-in-text)' }} />
-            ) : (
-              <ArrowUpRight size={20} style={{ color: 'var(--danger-text)' }} />
-            )}
-            <h2 className="modal-title">
-              {mode === 'IN' ? 'Stock In' : 'Stock Out'} - {product.name}
-            </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className={`badge ${mode === 'IN' ? 'badge-in-stock' : 'badge-low-stock'}`} style={{ padding: '6px' }}>
+              {mode === 'IN' ? <Plus size={16} strokeWidth={3} /> : <Minus size={16} strokeWidth={3} />}
+            </div>
+            <div>
+              <h2 className="modal-title">
+                {mode === 'IN' ? 'Stock In Movement' : 'Stock Out Movement'}
+              </h2>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>SKU: {product.sku}</p>
+            </div>
           </div>
           <button onClick={onClose} className="close-btn">
             <X size={18} />
@@ -53,13 +60,35 @@ const StockModal = ({ isOpen, onClose, onSubmit, product, mode = 'IN' }) => {
 
         <form onSubmit={handleSubmit}>
           <div className="modal-body">
-            <div style={{ marginBottom: '16px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-              Current stock: <strong style={{ color: 'var(--text-primary)' }}>{product.quantity} units</strong> (SKU: {product.sku})
+            <div style={{ 
+              backgroundColor: 'var(--bg-main)', 
+              padding: '12px 16px', 
+              borderRadius: 'var(--radius-md)', 
+              marginBottom: '18px',
+              border: '1px solid var(--border-color)',
+              display: 'flex',
+              justify-content: 'space-between',
+              align-items: 'center'
+            }}>
+              <div>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block' }}>Target Item</span>
+                <strong style={{ fontSize: '14px', color: '#fff' }}>{product.name}</strong>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block' }}>Projected Stock</span>
+                <strong style={{ 
+                  fontSize: '15px', 
+                  fontFamily: 'var(--font-mono)',
+                  color: mode === 'IN' ? 'var(--status-in-text)' : (projectedStock < 0 ? 'var(--danger-text)' : 'var(--text-primary)') 
+                }}>
+                  {product.quantity} ➔ {projectedStock >= 0 ? projectedStock : 0} units
+                </strong>
+              </div>
             </div>
 
             <div className="form-group">
               <label className="form-label">
-                {mode === 'IN' ? 'Quantity to Add *' : 'Quantity to Remove *'}
+                {mode === 'IN' ? 'Quantity to Add (+)' : 'Quantity to Remove (-)'}
               </label>
               <input
                 type="number"
@@ -77,13 +106,13 @@ const StockModal = ({ isOpen, onClose, onSubmit, product, mode = 'IN' }) => {
             </div>
 
             <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Reason / Note (Optional)</label>
+              <label className="form-label">Reason / Transaction Note (Optional)</label>
               <input
                 type="text"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 className="form-control"
-                placeholder={mode === 'IN' ? 'e.g. Supplier delivery' : 'e.g. Customer order #1042'}
+                placeholder={mode === 'IN' ? 'e.g. Supplier delivery invoice #4092' : 'e.g. Customer order dispatch'}
               />
             </div>
           </div>
@@ -94,9 +123,11 @@ const StockModal = ({ isOpen, onClose, onSubmit, product, mode = 'IN' }) => {
             </button>
             <button
               type="submit"
-              className={`btn ${mode === 'IN' ? 'btn-primary' : 'btn-danger'}`}
+              className={`stock-btn ${mode === 'IN' ? 'stock-btn-in' : 'stock-btn-out'}`}
+              style={{ padding: '10px 20px', fontSize: '13px' }}
             >
-              {mode === 'IN' ? 'Confirm Stock In' : 'Confirm Stock Out'}
+              {mode === 'IN' ? <Plus size={14} strokeWidth={3} /> : <Minus size={14} strokeWidth={3} />}
+              <span>{mode === 'IN' ? 'Confirm Stock In' : 'Confirm Stock Out'}</span>
             </button>
           </div>
         </form>

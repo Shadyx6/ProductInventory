@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowDownLeft, ArrowUpRight, History, Package } from 'lucide-react';
+import { ArrowLeft, Plus, Minus, History, Package } from 'lucide-react';
 import Header from '../components/Header';
 import StockModal from '../components/StockModal';
 import Toast from '../components/Toast';
@@ -111,7 +111,7 @@ const ProductDetailPage = () => {
               <span className="sku-code">{product.sku}</span>
             </div>
             <p style={{ color: 'var(--text-secondary)', marginTop: '4px', fontSize: '14px' }}>
-              Category: <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{product.category}</span>
+              Category: <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{product.category}</span>
             </p>
           </div>
 
@@ -121,9 +121,10 @@ const ProductDetailPage = () => {
                 setStockMode('IN');
                 setIsStockOpen(true);
               }}
-              className="btn btn-secondary btn-sm"
+              className="stock-btn stock-btn-in"
+              style={{ padding: '8px 14px' }}
             >
-              <ArrowDownLeft size={14} style={{ color: 'var(--status-in-text)' }} />
+              <Plus size={14} strokeWidth={3} />
               <span>Stock In</span>
             </button>
             <button
@@ -131,9 +132,10 @@ const ProductDetailPage = () => {
                 setStockMode('OUT');
                 setIsStockOpen(true);
               }}
-              className="btn btn-secondary btn-sm"
+              className="stock-btn stock-btn-out"
+              style={{ padding: '8px 14px' }}
             >
-              <ArrowUpRight size={14} style={{ color: 'var(--danger-text)' }} />
+              <Minus size={14} strokeWidth={3} />
               <span>Stock Out</span>
             </button>
           </div>
@@ -197,8 +199,8 @@ const ProductDetailPage = () => {
                 <tr>
                   <th>Date & Time</th>
                   <th>Type</th>
-                  <th>Quantity</th>
-                  <th>Note</th>
+                  <th>Quantity Movement</th>
+                  <th>Note / Reference</th>
                 </tr>
               </thead>
               <tbody>
@@ -213,7 +215,7 @@ const ProductDetailPage = () => {
                       <td style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{dateStr}</td>
                       <td>
                         <span className={`badge ${isStockIn ? 'badge-in' : 'badge-out'}`}>
-                          {isStockIn ? <ArrowDownLeft size={12} /> : <ArrowUpRight size={12} />}
+                          {isStockIn ? <Plus size={12} strokeWidth={3} /> : <Minus size={12} strokeWidth={3} />}
                           {isStockIn ? 'Stock In' : 'Stock Out'}
                         </span>
                       </td>

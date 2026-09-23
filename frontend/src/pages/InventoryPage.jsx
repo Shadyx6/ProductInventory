@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Search, Filter, RefreshCw } from 'lucide-react';
+import { Search, Filter, RefreshCw, Package, CheckCircle2, AlertTriangle, Layers } from 'lucide-react';
 import Header from '../components/Header';
 import ProductTable from '../components/ProductTable';
 import ProductFormModal from '../components/ProductFormModal';
@@ -63,7 +63,7 @@ const InventoryPage = () => {
   const handleCreateProduct = async (formData) => {
     try {
       await createProduct(formData);
-      showToast('Product added successfully');
+      showToast('Product created successfully');
       setIsFormOpen(false);
       loadProducts();
     } catch (err) {
@@ -100,10 +100,10 @@ const InventoryPage = () => {
       const id = selectedProductForStock.id;
       if (stockMode === 'IN') {
         await stockInProduct(id, { quantity, note });
-        showToast(`Stocked in ${quantity} units successfully`);
+        showToast(`Stock In (+${quantity}) recorded successfully`);
       } else {
         await stockOutProduct(id, { quantity, note });
-        showToast(`Stocked out ${quantity} units successfully`);
+        showToast(`Stock Out (-${quantity}) recorded successfully`);
       }
       setIsStockOpen(false);
       setSelectedProductForStock(null);
@@ -113,12 +113,61 @@ const InventoryPage = () => {
     }
   };
 
+  const totalProducts = products.length;
+  const lowStockCount = products.filter((p) => Number(p.quantity) < Number(p.low_stock_threshold)).length;
+  const inStockCount = totalProducts - lowStockCount;
+  const totalCategoryCount = categories.filter((c) => c !== 'All').length;
+
   return (
     <div className="app-container">
       <Header onAddProduct={() => {
         setSelectedProductForForm(null);
         setIsFormOpen(true);
       }} />
+
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div>
+            <div className="stat-label">Total SKUs</div>
+            <div className="stat-value">{totalProducts}</div>
+          </div>
+          <div className="stat-icon">
+            <Package size={20} style={{ color: 'var(--accent-primary)' }} />
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div>
+            <div className="stat-label">In Stock</div>
+            <div className="stat-value" style={{ color: 'var(--status-in-text)' }}>{inStockCount}</div>
+          </div>
+          <div className="stat-icon">
+            <CheckCircle2 size={20} style={{ color: 'var(--status-in-text)' }} />
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div>
+            <div className="stat-label">Low Stock Alerts</div>
+            <div className="stat-value" style={{ color: lowStockCount > 0 ? 'var(--status-low-text)' : 'var(--text-muted)' }}>
+              {lowStockCount}
+            </div>
+          </div>
+          <div className="stat-icon">
+            <AlertTriangle size={20} style={{ color: lowStockCount > 0 ? 'var(--status-low-text)' : 'var(--text-muted)' }} />
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div>
+            <div className="stat-label">Categories</div>
+            <div className="stat-value">{totalCategoryCount}</div>
+          </div>
+          <div className="stat-icon">
+            <Layers size={20} style={{ color: 'var(--text-secondary)' }} />
+          </div>
+        </div>
+      </div>
 
       <div className="toolbar">
         <div className="filter-group">
@@ -151,9 +200,9 @@ const InventoryPage = () => {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-            Showing {products.length} products
+            Showing {products.length} items
           </span>
-          <button onClick={loadProducts} className="btn-icon" title="Refresh Products">
+          <button onClick={loadProducts} className="icon-btn-subtle" title="Refresh Table">
             <RefreshCw size={14} />
           </button>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Edit3, Trash2, ArrowUpRight, ArrowDownLeft, Inbox } from 'lucide-react';
+import { Edit3, Trash2, Plus, Minus, Inbox } from 'lucide-react';
 
 const ProductTable = ({ products, loading, onEdit, onDelete, onStockIn, onStockOut }) => {
   if (loading) {
@@ -8,7 +8,7 @@ const ProductTable = ({ products, loading, onEdit, onDelete, onStockIn, onStockO
       <div className="table-card">
         <div className="empty-state">
           <div className="loading-spinner"></div>
-          <p style={{ marginTop: '12px' }}>Loading inventory items...</p>
+          <p style={{ marginTop: '14px', fontSize: '14px' }}>Loading inventory items...</p>
         </div>
       </div>
     );
@@ -18,8 +18,8 @@ const ProductTable = ({ products, loading, onEdit, onDelete, onStockIn, onStockO
     return (
       <div className="table-card">
         <div className="empty-state">
-          <Inbox size={40} className="empty-icon" />
-          <h3>No products found</h3>
+          <Inbox size={42} className="empty-icon" />
+          <h3 style={{ fontSize: '16px', color: '#fff' }}>No products found</h3>
           <p style={{ fontSize: '13px', marginTop: '4px' }}>
             Try adjusting your search query or category filter.
           </p>
@@ -34,13 +34,13 @@ const ProductTable = ({ products, loading, onEdit, onDelete, onStockIn, onStockO
         <table className="inventory-table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Product Name</th>
               <th>SKU</th>
               <th>Category</th>
-              <th>Quantity</th>
-              <th>Price</th>
+              <th>Available Stock</th>
+              <th>Unit Price</th>
               <th>Status</th>
-              <th style={{ textAlign: 'right' }}>Actions</th>
+              <th style={{ textAlign: 'right' }}>Stock Management & Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -60,7 +60,9 @@ const ProductTable = ({ products, loading, onEdit, onDelete, onStockIn, onStockO
                     <span className="category-tag">{product.category}</span>
                   </td>
                   <td>
-                    <span className="quantity-text">{product.quantity}</span>
+                    <span className="quantity-text" style={{ color: isLowStock ? 'var(--status-low-text)' : 'var(--text-primary)' }}>
+                      {product.quantity}
+                    </span>
                   </td>
                   <td>
                     <span className="price-text">${Number(product.price).toFixed(2)}</span>
@@ -81,32 +83,33 @@ const ProductTable = ({ products, loading, onEdit, onDelete, onStockIn, onStockO
                   <td>
                     <div className="action-buttons" style={{ justifyContent: 'flex-end' }}>
                       <button
-                        title="Stock In"
+                        title="Stock In (+)"
                         onClick={() => onStockIn(product)}
-                        className="btn-icon btn-icon-in"
+                        className="stock-btn stock-btn-in"
                       >
-                        <ArrowDownLeft size={14} />
-                        <span>In</span>
+                        <Plus size={13} strokeWidth={3} />
+                        <span>Stock In</span>
                       </button>
                       <button
-                        title="Stock Out"
+                        title="Stock Out (-)"
                         onClick={() => onStockOut(product)}
-                        className="btn-icon btn-icon-out"
+                        className="stock-btn stock-btn-out"
                       >
-                        <ArrowUpRight size={14} />
-                        <span>Out</span>
+                        <Minus size={13} strokeWidth={3} />
+                        <span>Stock Out</span>
                       </button>
                       <button
-                        title="Edit Product"
+                        title="Edit Details"
                         onClick={() => onEdit(product)}
-                        className="btn-icon"
+                        className="icon-btn-subtle"
+                        style={{ marginLeft: '4px' }}
                       >
                         <Edit3 size={14} />
                       </button>
                       <button
                         title="Delete Product"
                         onClick={() => onDelete(product)}
-                        className="btn-icon btn-icon-delete"
+                        className="icon-btn-subtle icon-btn-danger"
                       >
                         <Trash2 size={14} />
                       </button>
