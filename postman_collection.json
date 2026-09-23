@@ -1,0 +1,167 @@
+{
+  "info": {
+    "name": "Product Inventory Management API",
+    "description": "Postman Collection for Product Inventory Management System API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Create Product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Wireless Noise-Canceling Headphones\",\n  \"sku\": \"ELEC-HP-004\",\n  \"category\": \"Electronics\",\n  \"price\": 129.99,\n  \"quantity\": 20,\n  \"low_stock_threshold\": 5\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "products"]
+        }
+      }
+    },
+    {
+      "name": "2. Get All Products (with Search & Category Filter)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/products?search=mouse&category=Electronics",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "products"],
+          "query": [
+            {
+              "key": "search",
+              "value": "mouse"
+            },
+            {
+              "key": "category",
+              "value": "Electronics"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Get Product By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/products/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "products", "1"]
+        }
+      }
+    },
+    {
+      "name": "4. Update Product Details",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Ergonomic Wireless Pro Mouse\",\n  \"category\": \"Electronics\",\n  \"price\": 34.99,\n  \"low_stock_threshold\": 8\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "products", "1"]
+        }
+      }
+    },
+    {
+      "name": "5. Stock In",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"quantity\": 10,\n  \"note\": \"Supplier shipment arrived\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products/1/stock-in",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "products", "1", "stock-in"]
+        }
+      }
+    },
+    {
+      "name": "6. Stock Out",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"quantity\": 5,\n  \"note\": \"Dispatched to retail branch\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products/1/stock-out",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "products", "1", "stock-out"]
+        }
+      }
+    },
+    {
+      "name": "7. Get Product Transactions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/products/1/transactions",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "products", "1", "transactions"]
+        }
+      }
+    },
+    {
+      "name": "8. Delete Product",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/products/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "products", "1"]
+        }
+      }
+    }
+  ]
+}
