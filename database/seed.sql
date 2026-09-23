@@ -1,0 +1,31 @@
+INSERT INTO products (name, sku, category, price, quantity, low_stock_threshold) VALUES
+('Ergonomic Wireless Mouse', 'ELEC-WM-001', 'Electronics', 29.99, 45, 10),
+('Mechanical Gaming Keyboard', 'ELEC-KB-002', 'Electronics', 89.50, 8, 10),
+('Ultra-Wide 27-Inch Monitor', 'ELEC-MN-003', 'Electronics', 249.99, 14, 5),
+('Heavy-Duty Desk Organizer', 'OFF-DO-101', 'Office Supplies', 18.75, 60, 15),
+('Gel Pen Box - 12 Pack', 'OFF-GP-102', 'Office Supplies', 12.00, 3, 10),
+('Premium Executive Notebook', 'OFF-NB-103', 'Office Supplies', 15.50, 25, 8),
+('Stainless Steel Water Bottle', 'KITCH-WB-201', 'Kitchenware', 22.99, 30, 5),
+('French Press Coffee Maker', 'KITCH-CM-202', 'Kitchenware', 34.00, 4, 5),
+('Digital Kitchen Scale', 'KITCH-KS-203', 'Kitchenware', 19.99, 18, 5),
+('Cordless Electric Screwdriver', 'HARD-SD-301', 'Hardware', 42.50, 12, 4),
+('Precision Tool Set - 45 Pcs', 'HARD-TS-302', 'Hardware', 55.00, 2, 5),
+('Canvas Tool Roll Bag', 'HARD-TB-303', 'Hardware', 27.00, 22, 5);
+
+INSERT INTO stock_transactions (product_id, type, quantity, note) VALUES
+(1, 'IN', 45, 'Initial stock import'),
+(2, 'IN', 15, 'Initial stock import'),
+(2, 'OUT', 7, 'Store sales'),
+(3, 'IN', 14, 'Initial stock import'),
+(4, 'IN', 60, 'Initial stock import'),
+(5, 'IN', 10, 'Initial stock import'),
+(5, 'OUT', 7, 'Office clearance sale'),
+(6, 'IN', 25, 'Initial stock import'),
+(7, 'IN', 30, 'Initial stock import'),
+(8, 'IN', 10, 'Initial stock import'),
+(8, 'OUT', 6, 'Customer purchases'),
+(9, 'IN', 18, 'Initial stock import'),
+(10, 'IN', 12, 'Initial stock import'),
+(11, 'IN', 5, 'Initial stock import'),
+(11, 'OUT', 3, 'Damaged stock return'),
+(12, 'IN', 22, 'Initial stock import');
