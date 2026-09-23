@@ -67,8 +67,8 @@ const StockModal = ({ isOpen, onClose, onSubmit, product, mode = 'IN' }) => {
               marginBottom: '18px',
               border: '1px solid var(--border-color)',
               display: 'flex',
-              justify-content: 'space-between',
-              align-items: 'center'
+              justifyContent: 'space-between',
+              alignItems: 'center'
             }}>
               <div>
                 <span style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block' }}>Target Item</span>
